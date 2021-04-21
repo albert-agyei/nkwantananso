@@ -2,6 +2,7 @@
   <dictionary name="KSK Group">
     <words>
       <w>gitignore</w>
+      <w>gunicorn</w>
       <w>sqlalchemy</w>
     </words>
   </dictionary>
