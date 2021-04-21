@@ -30,8 +30,3 @@ class CommentForm(FlaskForm):
     comment_text = CKEditorField("Comment", validators=[DataRequired()])
     submit = SubmitField("Submit Comment")
 
-class EmailForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-
-class PasswordForm(FlaskForm):
-    password = PasswordField('Email', validators=[DataRequired()])

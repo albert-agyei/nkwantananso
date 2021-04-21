@@ -7,9 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm, EmailForm
-from .models import User
-from .util import send_email, ts
+from forms import LoginForm, RegisterForm, CreatePostForm, CommentForm
 from flask_gravatar import Gravatar
 
 app = Flask(__name__)
@@ -220,48 +218,6 @@ def delete_post(post_id):
     db.session.commit()
     return redirect(url_for('get_all_posts'))
 
-@app.route('/reset', meethods=["GET", "POST"])
-def reset():
-    form = EmailForm()
-    if form.validate_on_submit():
-        user = user.query.filter_by(email=form.email.date).first_or_404()
-
-        subject = "Password reset requested"
-
-        token = ts.dumps(self.email, salt='recover-key')
-
-        recover_url = url_for(
-            'reset_with-token',
-            token=token,
-            _external=True)
-
-        html = render_template(
-            'email/recover.html',
-            recover_url=recover_url)
-
-        return redirect(url_for('index'))
-    return render_template('reset.html', form=form)
-
-@app.route('/reset/<token>', methods=["GET", "POST"])
-def reset_with_token(token):
-    try:
-        email = ts.loads(token, salt="recover-key", max_age=86400)
-        except:
-        abort(404)
-
-    form = PasswordForm()
-
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=email).first_or_404()
-
-        user.password = form.password.data
-
-        db.session.add(user)
-        db.session.commit()
-
-        return redirect(url_for('signin'))
-
-    return render_template('reset_with_token.html', form=form, token=token)
 
 
 if  __name__ == "__main__":
